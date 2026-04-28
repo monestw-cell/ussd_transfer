@@ -1,5 +1,5 @@
 name: ussd_transfer
-description: "تحويل USSD إلى واجهة رسومية لخدمات بنك فلسطين وجوال باي."
+description: "تحويل."
 publish_to: "none"
 
 version: 1.0.0+1
