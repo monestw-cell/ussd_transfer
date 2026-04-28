@@ -10,7 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  ussd_launcher: ^1.1.0
+  ussd_launcher: ^1.0.3
   flutter_secure_storage: ^9.0.0
   local_auth: ^2.1.8
   permission_handler: ^11.0.1
