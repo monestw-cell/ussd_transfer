@@ -1,37 +1,29 @@
 import 'package:ussd_launcher/ussd_launcher.dart';
+import 'package:flutter/services.dart';
 
-  class UssdService {
-    static Future<String?> startSession(String ussdCode, int simSlot) async {
-      try {
-        final result = await UssdLauncher.launchUssd(
-          code: ussdCode,
-          subscriptionId: simSlot,
-          hideWindow: true,
-        );
-        return result?.message;
-      } catch (e) {
-        throw _handleError(e);
-      }
-    }
-
-    static Future<String?> sendReply(String reply) async {
-      try {
-        final result = await UssdLauncher.sendReply(reply);
-        return result?.message;
-      } catch (e) {
-        throw _handleError(e);
-      }
-    }
-
-    static Future<void> endSession() async {
-      await UssdLauncher.closeSession();
-    }
-
-    static Exception _handleError(dynamic e) {
-      final msg = e.toString();
-      if (msg.contains('no network')) return Exception('لا يوجد اتصال بالشبكة');
-      if (msg.contains('not supported')) return Exception('USSD غير مدعوم من المشغل');
-      return Exception(msg);
+class UssdService {
+  // دالة لبدأ جلسة USSD متعددة الخطوات
+  Future<void> startMultiStepSession(String code, List<String> options, int slotIndex) async {
+    try {
+      print('بدء جلسة USSD للكود: $code');
+      
+      // تشغيل الجلسة المتعددة
+      await UssdLauncher.multisessionUssd(
+        code: code,
+        slotIndex: slotIndex,
+        options: options,
+        initialDelayMs: 1000,
+        optionDelayMs: 1500,
+      );
+      
+      print('انتهت جلسة USSD بنجاح');
+    } on PlatformException catch (e) {
+      print('خطأ في جلسة USSD: ${e.code} - ${e.message}');
     }
   }
-  
+
+  // دالة لإلغاء الجلسة الحالية
+  void cancelSession() {
+    UssdLauncher.cancelSession();
+  }
+}
